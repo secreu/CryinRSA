@@ -2,7 +2,7 @@
 
 import random
 
-# Miller-Rabin Algorithm
+# Miller-Rabin 算法
 def miller_rabin(p):
 	# p - 1 = (2 ^ k) * t
 	t = p - 1
@@ -11,7 +11,7 @@ def miller_rabin(p):
 		t = t // 2
 		k += 1
 
-	# Test 6 times
+	# 测试 6 次
 	for _ in range(6):
 		a = random.randrange(2, p - 1)
 		temp1 = pow(a, t, p)
@@ -19,41 +19,41 @@ def miller_rabin(p):
 			temp2 = temp1
 			for i in range(k):
 				temp2 = (temp1 ** 2) % p
-				# Quadratic detection
+				# 二次探测
 				if temp2 == 1 and temp1 != 1 and temp1 != p - 1:
 					return False
 				temp1 = temp2
-			# Final detection
+			# 最终检测
 			if temp2 != 1:
 				return False
 	return True
 
-# Filter: initial detection
+# 过滤一部分小素数及其倍数
 def is_prime(num):
-    # exclude 0, 1 and negative number
+    # 排除 0 和 1
     if num < 2:
         return False
 
-    # if it is small prime, return true
+    # 小素数, 返回 true
     if num in SmallPrimes:
         return True
 
-    # if it is a multiple of small prime, return true
+    # 小素数的倍数,返回 true
     for prime in SmallPrimes:
         if num % prime == 0:
             return False
 
-    # Further detection
+    # Miller-Rabin 算法进一步检测
     return miller_rabin(num)
 
-# Generate a bitlen-bit(default) number and tt is tested for primality
+# 不断生成一个 bitlen 比特长度的大数，返回通过素性检验的大素数
 def get_prime(bitlen):
     while True:
         num = random.randrange(2 ** (bitlen - 1), 2 ** bitlen)
         if is_prime(num):
             return num
 
-# Some prime numbers less than 1000
+# 小素数表
 SmallPrimes = [
     2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 
     101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 
@@ -68,9 +68,9 @@ SmallPrimes = [
 ]
 
 
-# if __name__ == '__main__':
-# 	# if miller_rabin(97):
-# 	# 	print("yes")
-# 	num = get_prime(256)
-# 	print(num)
+if __name__ == '__main__':
+    # if miller_rabin(97):
+    # 	print("yes")
+    num = get_prime(1024)
+    print(num)
 
