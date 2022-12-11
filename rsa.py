@@ -57,7 +57,7 @@ def del_key(index):
         del(LocalKey[index])
         return True
 
-# 加密, 按 1 字节读, 扩展为 block 字节存
+# 加密, 按 block - 1 字节读, 扩展为 block 字节存
 def encrypt(in_file, out_file, ki):
     e = LocalKey[ki][0]
     n = LocalKey[ki][2]
@@ -75,7 +75,7 @@ def encrypt(in_file, out_file, ki):
     write_data(out_file, cipher_bytes)
     return
 
-# 解密, 按 block 字节读, 缩减为 1 字节存
+# 解密, 按 block 字节读, 缩减为 block - 1 字节存
 def decrypt(in_file, out_file, ki):
     d = LocalKey[ki][1]
     n = LocalKey[ki][2]
