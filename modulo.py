@@ -9,7 +9,6 @@ def gcd(a, b):
     else:
         return gcd(b, a % b)
 
-
 # 扩展欧几里的算法
 # 计算 ax + by = 1 中的 x 与 y 的整数解 ( a 与 b 互素)
 def ext_gcd(a, b):
