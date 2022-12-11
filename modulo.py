@@ -1,7 +1,5 @@
 # -*- coding: UTF-8 -*-
 
-import time
-
 # 求两个数字的最大公约数 (欧几里得算法)
 def gcd(a, b):
     if b == 0:
