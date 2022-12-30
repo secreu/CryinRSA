@@ -46,7 +46,7 @@ def gen_key(bitlen):
 
     LocalKey.append([e, d, n, block])
 
-    return len(LocalKey)
+    return len(LocalKey) - 1
 
 # 从 LocalKey 删除序号为 index 的一组密钥
 # 成功返回 true, 失败返回 false
