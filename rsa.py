@@ -11,8 +11,8 @@ LocalKey = []
 # 从文件读出 bytes 数据
 def read_data(file):
     with open(file, mode='rb') as f:
-        plain_bytes = f.read()
-    return plain_bytes
+        data = f.read()
+    return data
 
 # 将 bytes 数据写入文件
 def write_data(file, data):
