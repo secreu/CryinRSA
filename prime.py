@@ -11,8 +11,8 @@ def miller_rabin(p):
 		t = t // 2
 		k += 1
 
-	# 测试 6 次
-	for _ in range(6):
+	# 测试 10 次
+	for _ in range(10):
 		a = random.randrange(2, p - 1)
 		temp1 = pow(a, t, p)
 		if temp1 != 1:
