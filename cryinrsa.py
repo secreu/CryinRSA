@@ -42,7 +42,7 @@ def gen_key(bitlen):
         g, d, _ = ext_gcd(e, fn)
         if g != 1:
             d = 0
-    d = d % n
+    d = d % fn
 
     LocalKey.append([e, d, n, block])
 
@@ -68,16 +68,14 @@ def encrypt(in_file, out_file, ki):
     step = block - 1
     for i in range(0, length, step):
         j = (i + step) if (i + step < length) else length
-        # m = int.from_bytes(plain_bytes[i:j], 'big')
-        # 密文链接模式
-        if i == 0: # 第一块直接加密
-            m = int.from_bytes(plain_bytes[i:j], 'big')
-        else: # 先和前一个密文tmp异或，再加密
-            m = tmp ^ int.from_bytes(plain_bytes[i:j], 'big')
+        m = int.from_bytes(plain_bytes[i:j], 'big')
+        # # 密文链接模式
+        # if i == 0: # 第一块直接加密
+        #     m = int.from_bytes(plain_bytes[i:j], 'big')
+        # else: # 先和前一个密文tmp异或，再加密
+        #     m = c ^ int.from_bytes(plain_bytes[i:j], 'big')
         c = pow(m, e, n)
-        tmp = c
-        c = c.to_bytes(block, 'big')
-        cipher_bytes += c
+        cipher_bytes += c.to_bytes(block, 'big')
         # print("Encoding...%.6f"%(j / length) + "%")
     write_data(out_file, cipher_bytes)
     return
@@ -94,11 +92,12 @@ def decrypt(in_file, out_file, ki):
     for i in range(0, length, step):
         j = (i + step) if  (i + step < length) else length
         c = int.from_bytes(cipher_bytes[i:j], 'big')
-        # 密文链接模式
-        if i == 0: # 第一块直接解密
-            m = pow(c, d, n)
-        else: # 先解密，再和前一块异或得到明文
-            m = pow(c, d, n) ^ int.from_bytes(cipher_bytes[i-step:i], 'big')
+        m = pow(c, d, n)
+        # # 密文链接模式
+        # if i == 0: # 第一块直接解密
+        #     m = pow(c, d, n)
+        # else: # 先解密，再和前一块异或得到明文
+        #     m = pow(c, d, n) ^ int.from_bytes(cipher_bytes[i-step:i], 'big')
         m = m.to_bytes(block - 1, 'big')
 
         # 密文链接模式下的密文挪用的短块填充
@@ -119,7 +118,7 @@ def decrypt(in_file, out_file, ki):
     return
 
 if __name__ == '__main__':
-    ki = gen_key(512)
+    ki = gen_key(32)
 
     begin = time.time()
     encrypt("100kb.txt", "enc.txt", ki)
